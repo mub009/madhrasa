@@ -83,16 +83,16 @@ $db['default'] = array(
 
 
    
-    'username' => 'freelabn_rahmaniya',
-    'password' => 'Tt)1F.R3ISP$',  
-    'database' => 'freelabn_rahmaniya',
+    // 'username' => 'freelabn_rahmaniya',
+    // 'password' => 'Tt)1F.R3ISP$',  
+    // 'database' => 'freelabn_rahmaniya',
 
     
     
    
-    // 'username' => 'root',
-    // 'password' => '',  
-    // 'database' => 'rahmaniya',
+    'username' => 'root',
+    'password' => 'mubashir',  
+    'database' => 'rahmanaya',
 
 
     'dbdriver' => 'mysqli',

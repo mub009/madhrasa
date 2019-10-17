@@ -57,58 +57,26 @@ class Link extends Madhrasa_Controller
 
     }
 
-    // public function update($id)
-    // {
+    public function update($id)
+    {
 
     
-    //     $this->_AdminPrivilegeChecking('AdminEdit');
+        $this->_AdminPrivilegeChecking('AdminEdit');
 
-    //     $this->data['Id'] = $id;
+        $this->data['Id'] = $id;
 
-    //     $this->load->view('backend/admin/house/link/Update', $this->data);
-    // }
+        $this->load->view('backend/admin/house/link/Update', $this->data);
+    }
 
-    // public function delete($id)
-    // {
+    public function view($id)
+    {
 
-    //     $this->_AdminPrivilegeChecking('AdminDelete');
-
-    //     $this->data['Id'] = $id;
-
-    //     $this->load->view('backend/admin/house/link/Delete', $this->data);
-
-    // }
-
-    // public function details($id)
-    // {
-
-    //     $this->_AdminPrivilegeChecking('AdminView');
-
-    //     $this->data['user_details'] = $this->Base_Model->select('tbl_member', '*', $where = array('Id' => $id, 'StatusId !=' => 3), $order_desc = null, $order_asc = null, $limit = null, $start = null, $return = 'row_array');
-
-    //     return $this->data;
-
-    // }
-    
-    // public function view($id)
-    // {
-
-    //     $this->data['view'] = $this->Admin_Model->admininfo($id);
+        $this->data['view'] = $this->Admin_Model->admininfo($id);
    
-    //     $this->load->view('backend/admin/house/link/view', $this->data);
+        $this->load->view('backend/admin/house/link/view', $this->data);
 
-    // }
+    }
    
-    // public function customerview($id)
-    // {
-        
-    //     $this->data['customerview'] = $this->Base_Model->select('tbl_customer', '*', $where = array('UserId' => $id), $order_desc = null, $order_asc = null, $limit = null, $start = null, $return = 'row_array');
-    
-   
-    //     $this->load->view('backend/admin/house/link/customerview', $this->data);
-
-    // }
-  
    
 
 }

@@ -26,9 +26,9 @@ class Login extends MY_Controller
     {
       
 
+    echo "there site is under maintance... please visit again few hours later";
     
-    
-    
+    die();    
     
   
         $this->data['country']=$this->Location_Model->country();
@@ -43,7 +43,7 @@ class Login extends MY_Controller
 
         $this->session->sess_destroy();
 
-        redirect('common/login2');
+        redirect('common/login');
 
     }
 
