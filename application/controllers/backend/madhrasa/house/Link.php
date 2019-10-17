@@ -45,6 +45,11 @@ class Link extends Madhrasa_Controller
         $this->data['legancy']=$this->Legancy->design(array('add','actions','view'),'House');
 
 
+
+        $this->load->model("House_Model");
+
+
+
     }
 
 
@@ -59,22 +64,23 @@ class Link extends Madhrasa_Controller
 
     public function update($id)
     {
-
     
         $this->_AdminPrivilegeChecking('AdminEdit');
 
-        $this->data['Id'] = $id;
+        $this->data['HouseDetails']=$this->House_Model->HouseDetails($id);
 
-        $this->load->view('backend/admin/house/link/Update', $this->data);
+        $this->template('house/link/update', $this->data);
+
+    
     }
 
     public function view($id)
     {
+    
+        $this->data['HouseDetails']=$this->House_Model->HouseDetails($id);
 
-        $this->data['view'] = $this->Admin_Model->admininfo($id);
-   
-        $this->load->view('backend/admin/house/link/view', $this->data);
-
+        $this->template('house/link/view', $this->data);
+    
     }
    
    

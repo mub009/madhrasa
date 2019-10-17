@@ -26,9 +26,9 @@ class Login extends MY_Controller
     {
       
 
-    echo "there site is under maintance... please visit again few hours later";
+    // echo "there site is under maintance... please visit again few hours later";
     
-    die();    
+    // die();    
     
   
         $this->data['country']=$this->Location_Model->country();

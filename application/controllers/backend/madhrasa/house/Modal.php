@@ -11,10 +11,6 @@ class Modal extends Madhrasa_Controller
     {
         parent::__construct();
 
-        // $this->load->model("online/backend/admin/user/Admin_Model", 'Admin_Model');
-
-        // $this->data += $this->Admin_Model->read_modal_member();
-
 
     }
 

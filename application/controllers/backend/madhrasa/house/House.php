@@ -185,26 +185,28 @@ class House extends Madhrasa_Controller
                 'EveryPrivilege'=>$this->data['AdminPrivilege'],
                 'value'=>'DealerEdit',
                 'privilege'=> $this->data['MahalPrivilege'],
-                'link'=>'backend/admin/house/modal/update/',
+                'link'=>'backend/madhrasa/house/link/update/',
                 'icon'=>icon_edit,
                 'action_name'=>'Edit',
+                'link_mode'=>true,
                 'id'=>'$1'
-            ),
-            array(
-                'EveryPrivilege'=>$this->data['AdminPrivilege'],
-                'value'=>'DealerDelete',
-                'privilege'=> $this->data['MahalPrivilege'],
-                'link'=>'backend/admin/house/modal/delete/',
-                'icon'=>icon_delete,
-                'action_name'=>'Delete',
-                'id'=>'$1'
-            )
+             ),
+            // array(
+            //     'EveryPrivilege'=>$this->data['AdminPrivilege'],
+            //     'value'=>'DealerDelete',
+            //     'privilege'=> $this->data['MahalPrivilege'],
+            //     'link'=>'backend/madhrasa/house/link/insert/$1',
+            //     'icon'=>icon_delete,
+            //     'action_name'=>'Delete',
+            //     'id'=>'$1'
+            // )
         );
        
         
         $this->datatables->edit_action('action',  $config, 'Id');
 
-        $this->datatables->edit_view('view', "backend/admin/house/modal/view/$1", 'Id');
+
+        $this->datatables->edit_view_link('view', "backend/madhrasa/house/link/view/$1", 'Id');
 
         echo $this->datatables->generate();
 
@@ -372,37 +374,19 @@ class House extends Madhrasa_Controller
     }
 
 
-    public function details($id)
-    {
-        $this->_AdminPrivilegeChecking('AdminView');
 
-        //read vendor details from database
-
-
-        $this->data['user_details']=$this->Base_Model->select('tbl_member','*',$where=array('Id'=>$id),$order_desc=null,$order_asc=null,$limit=null,$start=null,$return='row_array');
-	
-        //	print_r($this->data['area_details']);
-      
-          echo json_encode($this->data['user_details'],true);
-
-    }
-
-   
 
     public function update()
     {
-
-        $this->_AdminPrivilegeChecking('AdminEdit');
-
-//checking for update button
-
-        if (isset($_POST['update'])) {
-
-//validate form data
-
-    
-
-            $this->form_validation->set_rules('Id', 'Id', 'required');
+        /**
+         *  Check Country Admin privilege in Admin Add Part
+         *
+         * */
+     
+            /**
+             *  validate Post data
+             *
+             */
 
             $this->form_validation->set_rules('RegNo', 'Reg No ', 'required');
 
@@ -430,51 +414,132 @@ class House extends Madhrasa_Controller
 
             $this->form_validation->set_rules('Feedback', 'Feedback', 'required');
 
-//validate form is true or false
+            $this->form_validation->set_rules('Id', 'Id', 'required');
+
+            
+            /**
+             * validate form is true or false
+             */
 
             if ($this->form_validation->run() == true) {
 
-//store data in variable using $Admin_details
+				$HouseDetails=array('StatusId' => 1,'RegNo'=>$this->input->post('RegNo'),'Name'=>$this->input->post('Name'),'Address'=>$this->input->post('Address'),'WardNo'=>$this->input->post('WardNo'),'HouseNo'=>$this->input->post('HouseNo'),'MobNo'=>$this->input->post('MobNo'),'Feedback'=>$this->input->post('Feedback'),'WhatsappNo'=>$this->input->post('WhatsappNo'),'Occupation'=>$this->input->post('Occupation'),'NoOfMembers'=>$this->input->post('NoOfmembers'));
+               
+                $HouseId=$this->input->post('Id');
+               
 
-                $user_details = array('RegNo'=>$this->input->post('RegNo'),'Name'=>$this->input->post('Name'),'Address'=>$this->input->post('Address'),'WardNo'=>$this->input->post('WardNo'),'HouseNo'=>$this->input->post('HouseNo'),'MobNo'=>$this->input->post('MobNo'),'WhatsappNo'=>$this->input->post('WhatsappNo'),'Occupation'=>$this->input->post('Occupation'),'NoOfMembers'=>$this->input->post('NoOfmembers'),'IsOldstundents'=>$this->input->post('IsOldstundents'),'IsAdmision'=>$this->input->post('IsAdmision'),'IsStudy'=>$this->input->post('IsStudy'),'Feedback'=>$this->input->post('Feedback'));
+                if ($this->Base_Model->update($this->Table_Name,array('Id'=>$HouseId), $HouseDetails)) {
 
-//then calling update function
+                    $MaleAdmision=$this->input->post('MaleAdmision');
+                    
+                    $FemaleAdmision=$this->input->post('FemaleAdmision');
+                    
+                    $MaleStudent=$this->input->post('MaleStudent');
 
+                    $FemaleStudent=$this->input->post('FemaleStudent');
 
-                if ($this->Base_Model->update('tbl_member', array('Id' => $this->input->post('Id')), $user_details)) {
+ 
+                    $PriviousFemaleAdmision=$this->input->post('FemaleOldStudent');
 
-                    //set flash message
+                    $PriviousMaleAdmision=$this->input->post('MaleOldStudent');
 
-                    $this->session->set_flashdata('success', 'Successfully Update Admin Account');
+                    $IsStudy=$this->input->post('IsStudy');
+
+                    $IsAdmision=$this->input->post('IsAdmision');
+                    
+                    $IsOldstundents=$this->input->post('IsOldstundents');
+
+                    $NoTotalPriviousStudent=0;
+                    
+                    $NoTotalAdmisionNextYearStudents=0;
+
+                    $NoTotalStudyStudents=0;
+
+                    if($IsStudy==1)
+                    {
+                        $NoTotalStudyStudents=($MaleStudent)?$MaleStudent:0+($FemaleStudent)?$FemaleStudent:0;
+
+                    }
+
+                    if($IsAdmision==1)
+                    {
+                        $NoTotalAdmisionNextYearStudents=($MaleAdmision)?$MaleAdmision:0+($FemaleAdmision)?$FemaleAdmision:0;
+ 
+                    }
+
+                  
+                    if($IsOldstundents==1)
+                    {
+                        $NoTotalPriviousStudent=($PriviousFemaleAdmision)?$PriviousFemaleAdmision:0+($PriviousMaleAdmision)?$PriviousMaleAdmision:0;
+
+                    }
+                    
+
+                    
+
+                  
+                    $StudyDetails=array(
+                                     'is_Study'=>$IsStudy,
+                                     'NoStudyBoys'=>$MaleStudent,
+                                     'NoStudyGirls'=>$FemaleStudent,
+                                     'NoTotalStudyStudents'=>$NoTotalStudyStudents,
+                                     'is_AdmisionNextYear'=>$IsAdmision,
+                                     'NoTotalAdmisionNextYearStudents'=>$NoTotalAdmisionNextYearStudents,
+                                     'NoAdmisionNextYearBoys'=>$MaleAdmision,
+                                     'NoAdmisionNextYearGirls'=>$FemaleAdmision,
+                                     'is_PriviousStudent'=>$IsOldstundents,
+                                     'NoTotalPriviousGirlStudent'=>$PriviousFemaleAdmision,
+                                     'NoTotalPriviousBoyStudent'=>$PriviousMaleAdmision,
+                                     'NoTotalPriviousStudent'=>$NoTotalPriviousStudent,
+                    );
+
+                    $this->Base_Model->update('tbl_study',array('HouseDetailsId'=>$HouseId), $StudyDetails);
 
                     $this->output->set_status_header('200');
 
-                    echo json_encode('200');
-
-                    //redirect to Admin page
-
-                    redirect('admin/user/Admin', 'refresh');
+                    echo json_encode('success');
 
                 } else {
-                    //its database prb show in here or query prb
 
-                    echo 'Database Problem Occure';
+                    /**
+                     *  database prb show in here or query prb
+                     */
+                    echo 'Database Problem Occur';
 
                 }
 
             } else {
-
+               
                 $this->output->set_status_header('400');
-
+               
                 echo json_encode($this->form_validation->error_array());
 
             }
 
-        }
 
     }
 
 
+
+
+
+
+    public function details($id)
+    {
+        $this->_AdminPrivilegeChecking('AdminView');
+
+        //read vendor details from database
+
+
+        $this->data['user_details']=$this->Base_Model->select('tbl_member','*',$where=array('Id'=>$id),$order_desc=null,$order_asc=null,$limit=null,$start=null,$return='row_array');
+	
+        //	print_r($this->data['area_details']);
+      
+          echo json_encode($this->data['user_details'],true);
+
+    }
+
+   
 
 
 
